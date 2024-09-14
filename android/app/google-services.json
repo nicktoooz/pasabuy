@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "791382668395",
+    "project_id": "fireweb-5ed84",
+    "storage_bucket": "fireweb-5ed84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791382668395:android:eb2a7e886714e6e285ad2e",
+        "android_client_info": {
+          "package_name": "io.nyxbit.pasabuy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791382668395-6appcmmfvhp3g00gk15msinsd7bje7p6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM82Hz0W5UjckV7h_eDmwsrrAP-JRhgf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791382668395-6appcmmfvhp3g00gk15msinsd7bje7p6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
