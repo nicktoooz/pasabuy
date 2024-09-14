@@ -1,12 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pasabuy/firebase_options.dart';
 import 'package:pasabuy/views/auth/signin.dart';
 import 'package:pasabuy/views/auth/signup.dart';
 import 'package:pasabuy/views/home.dart';
 import 'package:pasabuy/views/settings/profile.dart';
 import 'package:pasabuy/views/settings/settings.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -17,20 +21,12 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => const Home(),
       routes: [
         GoRoute(
-          path: 'auth',
-          routes: [
-            GoRoute(
-              path: 'sign-up',
-              builder: (context, state) => const SignUp(),
-            ),
-            GoRoute(
-              path: 'sign-in',
-              builder: (context, state) => const SignIn(),
-            ),
-          ],
-          redirect: (context, state) {
-            return "/auth/sign-in";
-          },
+          path: 'auth/sign-up',
+          builder: (context, state) => const SignUp(),
+        ),
+        GoRoute(
+          path: 'auth/sign-in',
+          builder: (context, state) => const SignIn(),
         ),
         GoRoute(
           path: 'settings',
@@ -53,6 +49,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerConfig: _router,
     );
   }
