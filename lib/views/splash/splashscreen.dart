@@ -1,15 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:pasabuy/main.dart';
+import 'package:pasabuy/theme/theme.dart';
+import 'dart:async';
+import 'package:provider/provider.dart';
+import 'package:pasabuy/theme/thememanager.dart';
 
-class Splashscreen extends StatefulWidget {
-  const Splashscreen({super.key});
-
+class SplashScreen extends StatefulWidget {
   @override
-  State<Splashscreen> createState() => _SplashscreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashscreenState extends State<Splashscreen> {
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 2), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MyApp()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final themeManager = Provider.of<ThemeManager>(context);
+    return Scaffold(
+      backgroundColor:
+          themeManager.themeMode == ThemeMode.dark ? darkTheme.canvasColor : lightTheme.canvasColor,
+      body: Center(
+        child: Text(
+          'Pasabuy',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: themeManager.themeMode == ThemeMode.dark ? Colors.white : Colors.black,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -4,7 +4,8 @@ import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/views/auth/signin.dart';
 import 'package:pasabuy/views/auth/signup.dart';
 import 'package:pasabuy/views/basket.dart';
-import 'package:pasabuy/views/home.dart';
+import 'package:pasabuy/views/home/home.dart';
+import 'package:pasabuy/views/home/messages.dart';
 import 'package:pasabuy/views/notifications.dart';
 import 'package:pasabuy/views/rootmounter.dart';
 import 'package:pasabuy/views/settings/profile.dart';
@@ -26,10 +27,16 @@ class AppNavigation {
         branches: [
           StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
             GoRoute(
-              path: '/',
-              name: 'home',
-              builder: (context, state) => Home(key: state.pageKey),
-            ),
+                path: '/',
+                name: 'home',
+                builder: (context, state) => Home(key: state.pageKey),
+                routes: [
+                  GoRoute(
+                    path: 'messages',
+                    name: 'messages',
+                    builder: (context, state) => MessagesPage(key: state.pageKey),
+                  )
+                ]),
           ]),
           StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
             GoRoute(
@@ -54,7 +61,7 @@ class AppNavigation {
                 GoRoute(
                   path: 'settings',
                   name: 'settings',
-                  builder: (context, state) => Settings(key: state.pageKey),
+                  builder: (context, state) => SettingsPage(key: state.pageKey),
                 ),
               ],
             ),

@@ -51,6 +51,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   CustomTextField(
+                    context: context,
                     prefixIcon: Icons.person,
                     hintText: "Full name",
                     errorText: errors['name-error'],
@@ -62,6 +63,7 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
+                    context: context,
                     prefixIcon: Icons.cake,
                     hintText: "Age",
                     errorText: errors['age-error'],
@@ -73,6 +75,7 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
+                    context: context,
                     prefixIcon: Icons.phone,
                     hintText: "Phone number",
                     errorText: errors['phone-error'],
@@ -84,6 +87,7 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
+                    context: context,
                     prefixIcon: Icons.email,
                     hintText: "Email Address",
                     errorText: errors['email-error'],
@@ -95,6 +99,7 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
+                    context: context,
                     prefixIcon: Icons.lock,
                     hintText: "Password",
                     obscureText: isObscured,
@@ -113,6 +118,7 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
+                    context: context,
                     prefixIcon: Icons.lock,
                     hintText: "Verify Password",
                     obscureText: isObscuredVerify,
@@ -153,10 +159,8 @@ class _SignUpState extends State<SignUp> {
                     width: double.infinity,
                     margin: const EdgeInsets.only(top: 16),
                     height: 50,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blueAccent,
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -175,10 +179,7 @@ class _SignUpState extends State<SignUp> {
                             errors = UserDataSanitise.sanitiseSignUp(data);
                             isAcceptedUI = isAccepted;
                           });
-
                           if (errors.isNotEmpty) return;
-
-                          User user = await User.signUp(data);
                           String firstName = await User.name;
                           print("Logged in as ${firstName}");
                           context.go('/');
@@ -194,20 +195,21 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blueAccent, width: 2),
-                          borderRadius: BorderRadius.circular(8)),
-                      margin: const EdgeInsets.only(top: 16),
-                      height: 50,
-                      child: TextButton(
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.blueAccent,
-                          ),
-                          onPressed: () {
-                            context.goNamed('sign-in');
-                          },
-                          child: const Text("Sign In")))
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(top: 16),
+                    height: 50,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {
+                        context.goNamed('sign-in');
+                      },
+                      child: const Text("Sign In"),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -219,6 +221,7 @@ class _SignUpState extends State<SignUp> {
 }
 
 Widget CustomTextField({
+  required BuildContext context,
   required IconData prefixIcon,
   IconData? suffixIcon,
   required String hintText,
@@ -236,7 +239,7 @@ Widget CustomTextField({
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
         decoration: BoxDecoration(
           border: Border.all(
-            color: hasError ? const Color(0xFFEF9A9A) : Colors.blue.shade100.withAlpha(80),
+            color: hasError ? const Color(0xFFEF9A9A) : Theme.of(context).colorScheme.surfaceTint,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8.0),
@@ -246,11 +249,11 @@ Widget CustomTextField({
             Icon(
               prefixIcon,
               size: 25,
-              color: hasError ? const Color(0xFFEF9A9A) : Colors.grey,
+              color: hasError ? const Color(0xFFEF9A9A) : Theme.of(context).colorScheme.surfaceTint,
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
-              color: hasError ? const Color(0xFFEF9A9A) : Colors.grey,
+              color: hasError ? const Color(0xFFEF9A9A) : Theme.of(context).colorScheme.surfaceTint,
               width: 2,
               height: 20,
             ),
@@ -271,7 +274,9 @@ Widget CustomTextField({
                 icon: Icon(
                   suffixIcon,
                   size: 25,
-                  color: hasError ? const Color(0xFFEF9A9A) : Colors.grey,
+                  color: hasError
+                      ? const Color(0xFFEF9A9A)
+                      : Theme.of(context).colorScheme.surfaceTint,
                 ),
               ),
           ],

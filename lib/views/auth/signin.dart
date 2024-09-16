@@ -53,6 +53,7 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               CustomTextField(
+                  context: context,
                   prefixIcon: Icons.mail,
                   hintText: 'Email Address',
                   errorText: errors['email-error'],
@@ -64,6 +65,7 @@ class _SignInState extends State<SignIn> {
                     });
                   }),
               CustomTextField(
+                  context: context,
                   prefixIcon: Icons.lock,
                   hintText: 'Password',
                   obscureText: isObscured,
@@ -86,10 +88,8 @@ class _SignInState extends State<SignIn> {
                   width: double.infinity,
                   margin: const EdgeInsets.only(top: 16),
                   height: 50,
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blueAccent,
+                  child: FilledButton(
+                      style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -110,14 +110,13 @@ class _SignInState extends State<SignIn> {
                       child: const Text("Sign In"))),
               Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.blueAccent, width: 2),
-                      borderRadius: BorderRadius.circular(8)),
                   margin: const EdgeInsets.only(top: 16),
                   height: 50,
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.blueAccent,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                       onPressed: () {
                         context.goNamed('sign-up');

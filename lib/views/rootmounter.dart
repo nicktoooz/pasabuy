@@ -21,10 +21,8 @@ class _RootMounterState extends State<RootMounter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: SafeArea(child: widget.navigationShell),
       bottomNavigationBar: Container(
-        color: Colors.blue,
         padding: const EdgeInsets.symmetric(horizontal: 40.0),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
@@ -37,8 +35,6 @@ class _RootMounterState extends State<RootMounter> {
             });
             goToBranch(_currentIndex);
           },
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
           iconSize: 28,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
