@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sizer/sizer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -26,8 +27,16 @@ class _HomeState extends State<Home> {
           child: Icon(Icons.message),
         ),
       ),
-      body: const Column(
-        children: [Text("Home")],
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              "Feed",
+              style: TextStyle(fontSize: 20.sp),
+            ),
+          )
+        ],
       ),
     );
   }

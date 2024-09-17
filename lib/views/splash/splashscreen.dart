@@ -1,39 +1,51 @@
-import 'package:flutter/material.dart';
-import 'package:pasabuy/main.dart';
-import 'package:pasabuy/theme/theme.dart';
 import 'dart:async';
-import 'package:provider/provider.dart';
-import 'package:pasabuy/theme/thememanager.dart';
 
-class SplashScreen extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pasabuy/main.dart';
+import 'package:pasabuy/services/settings.dart';
+import 'package:pasabuy/theme/theme.dart';
+import 'package:pasabuy/utils/utils.dart';
+import 'package:sizer/sizer.dart';
+
+class SplashScreen extends ConsumerStatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
+  String text = '';
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
+    _startSplashScreen();
+  }
+
+  Future<void> _startSplashScreen() async {
+    await Future.delayed(2.s);
+    if (mounted) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MyApp()),
+        MaterialPageRoute(
+          builder: (context) => const MainApp(),
+        ),
       );
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context);
+    final themeManager = ref.watch(themeManagerProvider);
     return Scaffold(
       backgroundColor:
-          themeManager.themeMode == ThemeMode.dark ? darkTheme.canvasColor : lightTheme.canvasColor,
+          themeManager == ThemeMode.dark ? darkTheme.canvasColor : lightTheme.canvasColor,
       body: Center(
         child: Text(
-          'Pasabuy',
+          "Pasabuy",
           style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: themeManager.themeMode == ThemeMode.dark ? Colors.white : Colors.black,
+            fontSize: 24.sp,
+            color: themeManager == ThemeMode.dark ? Colors.white : Colors.black,
           ),
         ),
       ),

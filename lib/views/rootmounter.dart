@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pasabuy/models/user.dart';
 
 class RootMounter extends StatefulWidget {
   const RootMounter({super.key, required this.navigationShell});
@@ -19,73 +20,76 @@ class _RootMounterState extends State<RootMounter> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    User.name.then((res) {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(child: widget.navigationShell),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-            goToBranch(_currentIndex);
-          },
-          iconSize: 28,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-          items: const [
-            BottomNavigationBarItem(
-              backgroundColor: Colors.transparent,
-              activeIcon: Icon(
-                Icons.home,
-              ),
-              icon: Icon(
-                Icons.home_outlined,
-              ),
-              label: 'Home',
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.transparent,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          goToBranch(_currentIndex);
+        },
+        iconSize: 28,
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
+        items: const [
+          BottomNavigationBarItem(
+            backgroundColor: Colors.transparent,
+            activeIcon: Icon(
+              Icons.home,
             ),
-            BottomNavigationBarItem(
-              backgroundColor: Colors.transparent,
-              activeIcon: Icon(
-                Icons.shopping_bag,
-              ),
-              icon: Icon(
-                Icons.shopping_bag_outlined,
-              ),
-              label: 'Home',
+            icon: Icon(
+              Icons.home_outlined,
             ),
-            BottomNavigationBarItem(
-              backgroundColor: Colors.transparent,
-              activeIcon: Badge(
-                child: Icon(
-                  Icons.notifications,
-                ),
-              ),
-              icon: Badge(
-                label: Text('3'),
-                child: Icon(
-                  Icons.notifications_outlined,
-                ),
-              ),
-              label: 'Notifications',
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.transparent,
+            activeIcon: Icon(
+              Icons.shopping_bag,
             ),
-            BottomNavigationBarItem(
-              backgroundColor: Colors.transparent,
-              icon: Icon(
-                Icons.person,
-              ),
-              activeIcon: Icon(
-                Icons.person,
-              ),
-              label: 'Profile',
+            icon: Icon(
+              Icons.shopping_bag_outlined,
             ),
-          ],
-        ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.transparent,
+            activeIcon: Badge(
+              child: Icon(
+                Icons.notifications,
+              ),
+            ),
+            icon: Badge(
+              label: Text('3'),
+              child: Icon(
+                Icons.notifications_outlined,
+              ),
+            ),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.transparent,
+            icon: Icon(
+              Icons.person,
+            ),
+            activeIcon: Icon(
+              Icons.person,
+            ),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

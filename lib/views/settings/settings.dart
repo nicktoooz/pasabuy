@@ -1,65 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:pasabuy/widgets/settingbutton.dart';
-import 'package:provider/provider.dart';
-import 'package:pasabuy/theme/thememanager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pasabuy/services/settings.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeManagerProvider);
+    final themeManager = ref.read(themeManagerProvider.notifier);
+    final splashScreenMode = ref.watch(splashScreenSetting);
+    final splashScreenController = ref.read(splashScreenSetting.notifier);
 
-class _SettingsPageState extends State<SettingsPage> {
-  bool _isDarkMode = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadThemePreference();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final themeManager = Provider.of<ThemeManager>(context);
+    final isDarkMode = themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
       body: Column(
         children: [
-          SettingButton(
-            Row(
-              children: [
-                Text(_isDarkMode ? 'Dark Mode' : 'Light Mode'),
-                const Spacer(),
-                Switch(
-                  value: _isDarkMode,
-                  onChanged: (value) {
-                    setState(() {
-                      _isDarkMode = value;
-                      _updateThemePreference(value);
-                      themeManager.toggleTheme(value);
-                    });
-                  },
-                ),
-              ],
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 0.2,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero))),
+              onPressed: () {
+                themeManager.toggleTheme(!isDarkMode);
+              },
+              child: Row(
+                children: [
+                  Text(isDarkMode ? 'Dark mode' : 'Light mode'),
+                  const Spacer(),
+                  Switch(
+                      value: isDarkMode,
+                      onChanged: (value) {
+                        themeManager.toggleTheme(value);
+                      })
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  elevation: 0.2,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero))),
+              onPressed: () {
+                splashScreenController.toggleState(!splashScreenMode);
+              },
+              child: Row(
+                children: [
+                  const Text('Enable splash screen'),
+                  const Spacer(),
+                  Switch(
+                      value: splashScreenMode,
+                      onChanged: (value) {
+                        splashScreenController.toggleState(value);
+                      })
+                ],
+              ),
             ),
           )
         ],
       ),
     );
-  }
-
-  void _loadThemePreference() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    String? savedMode = sp.getString('mode');
-    setState(() {
-      _isDarkMode = savedMode == 'dark';
-    });
-  }
-
-  void _updateThemePreference(bool isDarkMode) async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString('mode', isDarkMode ? 'dark' : 'light');
   }
 }
