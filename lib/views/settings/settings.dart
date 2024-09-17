@@ -54,7 +54,7 @@ class SettingsPage extends ConsumerWidget {
               },
               child: Row(
                 children: [
-                  const Text('Enable splash screen'),
+                  Text(splashScreenMode ? 'Disable splash screen' : 'Enable splash screen'),
                   const Spacer(),
                   Switch(
                       value: splashScreenMode,
