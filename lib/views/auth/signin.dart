@@ -20,11 +20,6 @@ class _SignInState extends State<SignIn> {
   bool isObscured = true;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     errors.clear();
@@ -99,7 +94,17 @@ class _SignInState extends State<SignIn> {
                         if (errors.isNotEmpty) return;
                         User.signIn(email, password).then((user) {
                           context.go('/');
-                        }).catchError((error) {});
+                        }).catchError((error) {
+                          if (error.toString().contains('user-not-found')) {
+                            setState(() {
+                              errors['email-error'] = 'User not found';
+                            });
+                          } else if (error.toString().contains('wrong-password')) {
+                            setState(() {
+                              errors['password-error'] = 'Wrong password';
+                            });
+                          }
+                        });
                       },
                       child: const Text("Sign In"))),
               Container(

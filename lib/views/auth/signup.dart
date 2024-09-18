@@ -1,7 +1,7 @@
+import 'dart:ffi';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/models/userdata.dart';
 import 'package:pasabuy/sanitiser/userdata.dart';
 
@@ -25,6 +25,12 @@ class _SignUpState extends State<SignUp> {
   bool isObscuredVerify = true;
 
   Map<String, String> errors = {};
+
+  @override
+  void dispose() {
+    errors.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
