@@ -180,8 +180,6 @@ class _SignUpState extends State<SignUp> {
                             isAcceptedUI = isAccepted;
                           });
                           if (errors.isNotEmpty) return;
-                          String firstName = await User.name;
-                          print("Logged in as ${firstName}");
                           context.go('/');
                         } catch (e) {
                           if (e.toString().contains('email-already-in-use')) {

@@ -59,7 +59,6 @@ class _SignInState extends State<SignIn> {
                   errorText: errors['email-error'],
                   onChanged: (value) {
                     email = value;
-                    print(email);
                     setState(() {
                       errors.remove('email-error');
                     });
@@ -74,11 +73,9 @@ class _SignInState extends State<SignIn> {
                   onSuffixPressed: () {
                     setState(() {
                       isObscured = !isObscured;
-                      print(isObscured);
                     });
                   },
                   onChanged: (value) {
-                    print(value);
                     password = value;
                     setState(() {
                       errors.remove('password-error');
@@ -96,16 +93,13 @@ class _SignInState extends State<SignIn> {
                       ),
                       onPressed: () {
                         setState(() {
-                          print(email);
                           errors = UserDataSanitise.sanitiseSignIn(
                               UserData(email: email, password: password));
                         });
                         if (errors.isNotEmpty) return;
                         User.signIn(email, password).then((user) {
                           context.go('/');
-                        }).catchError((error) {
-                          print(error);
-                        });
+                        }).catchError((error) {});
                       },
                       child: const Text("Sign In"))),
               Container(

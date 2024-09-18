@@ -6,8 +6,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/services/settings.dart';
-import 'package:pasabuy/views/splash/splashscreen.dart';
 import 'package:pasabuy/theme/theme.dart';
+import 'package:pasabuy/views/splash/splashscreen.dart';
 import 'package:pasabuy/utils/appnavigation.dart';
 import 'package:pasabuy/firebase_options.dart';
 import 'package:sizer/sizer.dart';
@@ -37,7 +37,6 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final showSplashScreen = ref.watch(splashScreenSetting);
-    print(showSplashScreen);
     return MaterialApp(
       home: showSplashScreen ? const SplashScreen() : const MainApp(),
     );

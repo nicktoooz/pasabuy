@@ -11,7 +11,6 @@ class SettingsPage extends ConsumerWidget {
     final themeManager = ref.read(themeManagerProvider.notifier);
     final splashScreenMode = ref.watch(splashScreenSetting);
     final splashScreenController = ref.read(splashScreenSetting.notifier);
-
     final isDarkMode = themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(title: const Text("Settings")),
@@ -23,7 +22,7 @@ class SettingsPage extends ConsumerWidget {
               style: ElevatedButton.styleFrom(
                   elevation: 0.2,
                   alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero))),
               onPressed: () {
                 themeManager.toggleTheme(!isDarkMode);
@@ -47,7 +46,7 @@ class SettingsPage extends ConsumerWidget {
               style: ElevatedButton.styleFrom(
                   elevation: 0.2,
                   alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.zero))),
               onPressed: () {
                 splashScreenController.toggleState(!splashScreenMode);
