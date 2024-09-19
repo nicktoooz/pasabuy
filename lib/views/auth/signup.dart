@@ -1,9 +1,9 @@
-import 'dart:ffi';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasabuy/models/userdata.dart';
 import 'package:pasabuy/sanitiser/userdata.dart';
+import 'package:pasabuy/views/components/customtextfield.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -57,7 +57,6 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                   CustomTextField(
-                    context: context,
                     prefixIcon: Icons.person,
                     hintText: "Full name",
                     errorText: errors['name-error'],
@@ -69,7 +68,6 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
-                    context: context,
                     prefixIcon: Icons.cake,
                     hintText: "Age",
                     errorText: errors['age-error'],
@@ -81,7 +79,6 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
-                    context: context,
                     prefixIcon: Icons.phone,
                     hintText: "Phone number",
                     errorText: errors['phone-error'],
@@ -93,7 +90,6 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
-                    context: context,
                     prefixIcon: Icons.email,
                     hintText: "Email Address",
                     errorText: errors['email-error'],
@@ -105,7 +101,6 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
-                    context: context,
                     prefixIcon: Icons.lock,
                     hintText: "Password",
                     obscureText: isObscured,
@@ -124,7 +119,6 @@ class _SignUpState extends State<SignUp> {
                     },
                   ),
                   CustomTextField(
-                    context: context,
                     prefixIcon: Icons.lock,
                     hintText: "Verify Password",
                     obscureText: isObscuredVerify,
@@ -222,83 +216,4 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-}
-
-Widget CustomTextField({
-  required BuildContext context,
-  required IconData prefixIcon,
-  IconData? suffixIcon,
-  required String hintText,
-  String? errorText,
-  bool obscureText = false,
-  required ValueChanged<String> onChanged,
-  VoidCallback? onSuffixPressed, // Optional suffix icon press handler
-}) {
-  final hasError = errorText != null && errorText.isNotEmpty;
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Container(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: hasError ? const Color(0xFFEF9A9A) : Theme.of(context).colorScheme.surfaceTint,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              prefixIcon,
-              size: 25,
-              color: hasError ? const Color(0xFFEF9A9A) : Theme.of(context).colorScheme.surfaceTint,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              color: hasError ? const Color(0xFFEF9A9A) : Theme.of(context).colorScheme.surfaceTint,
-              width: 2,
-              height: 20,
-            ),
-            Expanded(
-              child: TextFormField(
-                obscureText: obscureText,
-                onChanged: onChanged,
-                decoration: InputDecoration(
-                  hintText: hintText,
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-            ),
-            if (suffixIcon != null)
-              IconButton(
-                onPressed: onSuffixPressed,
-                icon: Icon(
-                  suffixIcon,
-                  size: 25,
-                  color: hasError
-                      ? const Color(0xFFEF9A9A)
-                      : Theme.of(context).colorScheme.surfaceTint,
-                ),
-              ),
-          ],
-        ),
-      ),
-      if (hasError)
-        Padding(
-          padding: const EdgeInsets.only(bottom: 1.5),
-          child: Row(
-            children: [
-              const Icon(Icons.error, size: 14, color: Colors.red),
-              const SizedBox(width: 5),
-              Text(errorText, style: const TextStyle(color: Colors.red)),
-            ],
-          ),
-        )
-      else
-        const SizedBox(height: 10),
-    ],
-  );
 }

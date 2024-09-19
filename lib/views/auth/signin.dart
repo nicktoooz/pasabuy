@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/models/userdata.dart';
 import 'package:pasabuy/sanitiser/userdata.dart';
-import 'package:pasabuy/views/auth/signup.dart';
+import 'package:pasabuy/views/components/customtextfield.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -48,7 +48,6 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
               CustomTextField(
-                  context: context,
                   prefixIcon: Icons.mail,
                   hintText: 'Email Address',
                   errorText: errors['email-error'],
@@ -59,7 +58,6 @@ class _SignInState extends State<SignIn> {
                     });
                   }),
               CustomTextField(
-                  context: context,
                   prefixIcon: Icons.lock,
                   hintText: 'Password',
                   obscureText: isObscured,

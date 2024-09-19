@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pasabuy/models/user.dart';
 
 class RootMounter extends StatefulWidget {
   const RootMounter({super.key, required this.navigationShell});
@@ -22,7 +21,6 @@ class _RootMounterState extends State<RootMounter> {
   @override
   void initState() {
     super.initState();
-    User.name.then((res) {});
   }
 
   @override
