@@ -18,15 +18,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.goNamed('messages');
-        },
-        child: const Badge(
-          label: Text('2'),
-          child: Icon(Icons.message),
-        ),
-      ),
       body: Column(
         children: [
           Padding(

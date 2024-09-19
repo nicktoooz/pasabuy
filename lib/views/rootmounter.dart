@@ -11,13 +11,12 @@ class RootMounter extends StatefulWidget {
 }
 
 class _RootMounterState extends State<RootMounter> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
 
   void goToBranch(int index) {
     widget.navigationShell
         .goBranch(index, initialLocation: index == widget.navigationShell.currentIndex);
   }
-
   @override
   void initState() {
     super.initState();
@@ -45,16 +44,6 @@ class _RootMounterState extends State<RootMounter> {
           BottomNavigationBarItem(
             backgroundColor: Colors.transparent,
             activeIcon: Icon(
-              Icons.home,
-            ),
-            icon: Icon(
-              Icons.home_outlined,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Colors.transparent,
-            activeIcon: Icon(
               Icons.shopping_bag,
             ),
             icon: Icon(
@@ -73,6 +62,31 @@ class _RootMounterState extends State<RootMounter> {
               label: Text('3'),
               child: Icon(
                 Icons.notifications_outlined,
+              ),
+            ),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.transparent,
+            activeIcon: Icon(
+              Icons.home,
+            ),
+            icon: Icon(
+              Icons.home_outlined,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Colors.transparent,
+            activeIcon: Badge(
+              child: Icon(
+                Icons.message,
+              ),
+            ),
+            icon: Badge(
+              label: Text('6'),
+              child: Icon(
+                Icons.message_outlined,
               ),
             ),
             label: 'Notifications',

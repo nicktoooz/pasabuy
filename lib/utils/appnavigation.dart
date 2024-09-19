@@ -27,19 +27,6 @@ class AppNavigation {
         branches: [
           StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
             GoRoute(
-                path: '/',
-                name: 'home',
-                builder: (context, state) => Home(key: state.pageKey),
-                routes: [
-                  GoRoute(
-                    path: 'messages',
-                    name: 'messages',
-                    builder: (context, state) => MessagesPage(key: state.pageKey),
-                  )
-                ]),
-          ]),
-          StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
-            GoRoute(
               path: '/basket',
               name: 'basket',
               builder: (context, state) => Basket(key: state.pageKey),
@@ -51,6 +38,20 @@ class AppNavigation {
               name: 'notification',
               builder: (context, state) => Notifications(key: state.pageKey),
             ),
+          ]),
+          StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
+            GoRoute(
+              path: '/',
+              name: 'home',
+              builder: (context, state) => Home(key: state.pageKey),
+            ),
+          ]),
+          StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
+            GoRoute(
+              path: '/messages',
+              name: 'messages',
+              builder: (context, state) => MessagesPage(key: state.pageKey),
+            )
           ]),
           StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
             GoRoute(

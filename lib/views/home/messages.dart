@@ -11,7 +11,6 @@ class _MessagesPageState extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Messages")),
       body: const SafeArea(
         child: Column(
           children: [Text("Messages")],
