@@ -18,7 +18,7 @@ class NewPostPage extends StatefulWidget {
 class _NewPostPageState extends State<NewPostPage> {
   String content = '';
   final controller = MultiImagePickerController(
-      maxImages: 5,
+      maxImages: 4,
       picker: (allowMultiple) async {
         return await pickImagesUsingImagePicker(allowMultiple);
       });
@@ -27,62 +27,65 @@ class _NewPostPageState extends State<NewPostPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create post'),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            TextFormField(
-              minLines: 10,
-              maxLines: 12,
-              onChanged: (val) {
-                content = val;
-              },
-              decoration: const InputDecoration(hintText: 'Type here'),
-            ),
-            Expanded(
-              child: MultiImagePickerView(
-                controller: controller,
-                padding: const EdgeInsets.all(10),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(20),
-              height: 50,
-              child: FilledButton(
-                style: FilledButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+          appBar: AppBar(
+            title: const Text('Create post'),
+          ),
+          body: Padding(
+            padding: EdgeInsets.all(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                TextFormField(
+                  minLines: 10,
+                  maxLines: 12,
+                  onChanged: (val) {
+                    content = val;
+                  },
+                  decoration: const InputDecoration(hintText: 'Type here'),
+                ),
+                Expanded(
+                  child: MultiImagePickerView(
+                    controller: controller,
+                    padding: const EdgeInsets.all(10),
                   ),
                 ),
-                onPressed: () async {
-                  var images = controller.images;
-                  FirebaseDatabase db = FirebaseDatabaseInstance().database;
-                  int createdAt = DateTime.now().millisecondsSinceEpoch;
-                  List<String> imageUrls = [];
-                  DatabaseReference ref = db.ref('posts/${User().uid}');
-                  String key = ref.push().key.toString();
-                  imageUrls = await uploadImages(images, key);
-                  ref.child(key).set({
-                    'created_at': createdAt,
-                    'content': content,
-                    'image_urls': imageUrls,
-                  });
-                },
-                child: Text(
-                  "Post",
-                  style: TextStyle(fontSize: 16.sp),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.all(20),
+                  height: 50,
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () async {
+                      var images = controller.images;
+                      FirebaseDatabase db = FirebaseDatabaseInstance().database;
+                      int createdAt = DateTime.now().millisecondsSinceEpoch;
+                      List<String> imageUrls = [];
+                      DatabaseReference ref = db.ref('posts');
+                      String key = ref.push().key.toString();
+                      imageUrls = await uploadImages(images, key);
+                      ref.child(key).set({
+                        'uid': User().uid,
+                        'created_at': createdAt,
+                        'content': content,
+                        'image_urls': imageUrls,
+                      });
+                    },
+                    child: Text(
+                      "Post",
+                      style: TextStyle(fontSize: 16.sp),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:pasabuy/theme/theme.dart';
 import 'package:pasabuy/views/splash/splashscreen.dart';
 import 'package:pasabuy/utils/appnavigation.dart';
 import 'package:pasabuy/firebase_options.dart';
+import 'package:relative_time/relative_time.dart';
 import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
@@ -52,6 +53,9 @@ class MainApp extends ConsumerWidget {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return MaterialApp.router(
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            RelativeTimeLocalizations.delegate,
+          ],
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: themeManager,
