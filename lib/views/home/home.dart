@@ -18,6 +18,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.goNamed('new-post');
+        },
+        tooltip: "Add post",
+        child: const Icon(Icons.add),
+      ),
       body: Column(
         children: [
           Padding(
