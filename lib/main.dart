@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/services/settings.dart';
 import 'package:pasabuy/theme/theme.dart';
 import 'package:pasabuy/views/splash/splashscreen.dart';
@@ -24,7 +23,7 @@ Future<void> main() async {
     databaseURL: dotenv.env['DATABASE_URL'],
   );
   if (!kIsWeb) database.setPersistenceEnabled(true);
-  database.ref('users/${User().uid}').keepSynced(true);
+  database.ref('users').keepSynced(true);
 
   runApp(
     const ProviderScope(

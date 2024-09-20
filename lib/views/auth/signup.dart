@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/models/userdata.dart';
 import 'package:pasabuy/sanitiser/userdata.dart';
 import 'package:pasabuy/views/components/customtextfield.dart';
@@ -180,7 +181,9 @@ class _SignUpState extends State<SignUp> {
                             isAcceptedUI = isAccepted;
                           });
                           if (errors.isNotEmpty) return;
-                          context.go('/');
+                          User.signUp(data).then((res) {
+                            context.go('/');
+                          });
                         } catch (e) {
                           if (e.toString().contains('email-already-in-use')) {
                             setState(() {
