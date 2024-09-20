@@ -23,11 +23,15 @@ class _PostCardState extends State<PostCard> {
     super.initState();
     FirebaseFirestore db = FirebaseFirestore.instance;
     DocumentReference ref = db.collection('Users').doc(widget.postData.userId);
-    ref.get().then((data) {
-      setState(() {
-        name = data['name'].toString();
+    if (mounted) {
+      ref.get().then((data) {
+        if (mounted) {
+          setState(() {
+            name = data['name'].toString();
+          });
+        }
       });
-    });
+    }
   }
 
   @override

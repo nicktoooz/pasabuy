@@ -2,20 +2,21 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/utils/firestore.dart';
 import 'package:sizer/sizer.dart';
 
-class NewPostPage extends StatefulWidget {
+class NewPostPage extends ConsumerStatefulWidget {
   const NewPostPage({super.key});
 
   @override
-  State<NewPostPage> createState() => _NewPostPageState();
+  ConsumerState<NewPostPage> createState() => _NewPostPageState();
 }
 
-class _NewPostPageState extends State<NewPostPage> {
+class _NewPostPageState extends ConsumerState<NewPostPage> {
   String content = '';
   final controller = MultiImagePickerController(
       maxImages: 4,
