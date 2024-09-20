@@ -14,31 +14,24 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Post> posts = [];
+  ScrollController scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
-    FirebaseDatabase db = FirebaseDatabaseInstance().database;
-    DatabaseReference ref = db.ref('posts');
-    ref.onValue.listen((data) {
-      if (data.snapshot.exists) {
-        for (var content in data.snapshot.children) {
-          List<String> imageUrls = [];
-          String postId = content.key.toString();
-          String uid = content.child('uid').value.toString();
-          String body = content.child('content').value.toString();
-          int createdAt = int.parse(content.child('created_at').value.toString());
-          if (content.child('image_urls').value != null) {
-            imageUrls = List<String>.from(content.child('image_urls').value as List);
-          }
-          setState(() {
-            posts.add(Post(postId, uid, body, imageUrls, createdAt));
-          });
-        }
-      }
-      setState(() {
-        posts = posts.reversed.toList();
-      });
+    getPosts();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {}
     });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  Future refresh() async {
+    getPosts();
   }
 
   @override
@@ -54,15 +47,52 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                return PostCard(postData: posts[index]);
-              },
+            child: Center(
+              child: posts.isEmpty
+                  ? const CircularProgressIndicator()
+                  : RefreshIndicator(
+                      onRefresh: refresh,
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: posts.length,
+                        itemBuilder: (context, index) {
+                          return PostCard(postData: posts[index]);
+                        },
+                      ),
+                    ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void getPosts() {
+    setState(() {
+      posts.clear();
+    });
+    FirebaseDatabase db = FirebaseDatabaseInstance().database;
+    Query ref = db.ref('posts');
+    ref.once().then((data) {
+      if (data.snapshot.exists) {
+        for (var content in data.snapshot.children) {
+          List<String> imageUrls = [];
+          String postId = content.key.toString();
+          String uid = content.child('uid').value.toString();
+          String body = content.child('content').value.toString();
+          String address = content.child('address').value.toString();
+          int createdAt = int.parse(content.child('created_at').value.toString());
+          if (content.child('image_urls').value != null) {
+            imageUrls = List<String>.from(content.child('image_urls').value as List);
+          }
+          setState(() {
+            posts.add(Post(postId, uid, body, address, imageUrls, createdAt));
+          });
+        }
+      }
+      setState(() {
+        posts = posts.reversed.toList();
+      });
+    });
   }
 }

@@ -63,6 +63,7 @@ class _PostCardState extends State<PostCard> {
                     Text(RelativeTime(context).format(
                       DateTime.fromMillisecondsSinceEpoch(widget.postData.createdAt),
                     )),
+                    Text(widget.postData.address),
                   ],
                 ),
               ],
