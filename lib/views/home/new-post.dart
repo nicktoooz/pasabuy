@@ -3,9 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:pasabuy/models/user.dart';
+import 'package:pasabuy/utils/dialog-builder.dart';
 import 'package:pasabuy/utils/firestore.dart';
 import 'package:sizer/sizer.dart';
 
@@ -16,13 +19,22 @@ class NewPostPage extends ConsumerStatefulWidget {
   ConsumerState<NewPostPage> createState() => _NewPostPageState();
 }
 
-class _NewPostPageState extends ConsumerState<NewPostPage> {
+class _NewPostPageState extends ConsumerState<NewPostPage> with TickerProviderStateMixin {
+  late final AnimationController _controller;
   String content = '';
+  String uploading = 'Upload';
+  bool isUploading = false;
   final controller = MultiImagePickerController(
       maxImages: 4,
       picker: (allowMultiple) async {
         return await pickImagesUsingImagePicker(allowMultiple);
       });
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,21 +76,64 @@ class _NewPostPageState extends ConsumerState<NewPostPage> {
                     ),
                   ),
                   onPressed: () async {
+                    if (isUploading) {
+                      return;
+                    }
+                    setState(() {
+                      isUploading = true;
+                      uploading = 'Uploading';
+                    });
                     var images = controller.images;
                     FirebaseFirestore db = Firestore().instance;
                     int createdAt = DateTime.now().millisecondsSinceEpoch;
+
                     List<String> imageUrls = await uploadImages(images);
                     DocumentReference ref = db.collection('Posts').doc();
-
                     await ref.set({
                       'uid': User().uid,
                       'created_at': createdAt,
                       'content': content,
                       'image_urls': imageUrls,
                     });
+                    setState(() {
+                      isUploading = false;
+                      uploading = 'Uploaded';
+                    });
+                    buildDialog(
+                      onLoad: (ctx) async {
+                        await Future.delayed(const Duration(seconds: 3));
+                        Navigator.of(ctx).pop();
+                        context.goNamed('home');
+                      },
+                      context: context,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Wrap(
+                          direction: Axis.vertical,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          runAlignment: WrapAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              'assets/lottie/success.json',
+                              controller: _controller,
+                              onLoaded: (composition) {
+                                _controller
+                                  ..duration = const Duration(milliseconds: 2000)
+                                  ..forward();
+                              },
+                              frameRate: const FrameRate(120),
+                            ),
+                            const Text('Posted successfully'),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
                   child: Text(
-                    "Post",
+                    uploading,
                     style: TextStyle(fontSize: 16.sp),
                   ),
                 ),
@@ -103,11 +158,6 @@ Future<List<String>> uploadImages(Iterable<ImageFile> images) async {
           .child('post_images/${User().uid}/${DateTime.now().millisecondsSinceEpoch}.jpg');
 
       UploadTask uploadTask = ref.putFile(file);
-
-      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-        double progress = snapshot.bytesTransferred / snapshot.totalBytes;
-        print('Upload progress: ${progress * 100} %');
-      });
 
       await uploadTask;
 
