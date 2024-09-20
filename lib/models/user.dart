@@ -1,7 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:pasabuy/models/userdata.dart';
-import 'package:pasabuy/utils/firebasedatabase.dart';
 
 class User {
   late FirebaseAuth _auth;
@@ -50,10 +49,14 @@ class User {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: userdata.email, password: userdata.password);
 
-      DatabaseReference ref =
-          FirebaseDatabaseInstance().database.ref("users/${userCredential.user!.uid.toString()}");
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-      await ref.set({'name': userdata.name, 'age': userdata.age, 'phone': userdata.phone});
+      await users.doc(userCredential.user!.uid).set({
+        'name': userdata.name,
+        'age': userdata.age,
+        'phone': userdata.phone,
+      });
+
       return User();
     } catch (e) {
       rethrow;
@@ -73,8 +76,8 @@ class User {
   }
 
   static Future<String> get name async {
-    var ref = FirebaseDatabaseInstance().database.ref('users/${User().uid}');
-    var userdata = await ref.get();
-    return userdata.child('name').value.toString();
+    var userDoc = await FirebaseFirestore.instance.collection('Users').doc(User().uid).get();
+    print('Name : ${User().uid}');
+    return userDoc.data()?['name'] ?? 'Null';
   }
 }

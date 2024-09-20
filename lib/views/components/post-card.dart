@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pasabuy/models/post.dart';
-import 'package:pasabuy/utils/firebasedatabase.dart';
 import 'package:relative_time/relative_time.dart';
 import 'package:sizer/sizer.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -22,11 +21,11 @@ class _PostCardState extends State<PostCard> {
   @override
   void initState() {
     super.initState();
-    FirebaseDatabase db = FirebaseDatabaseInstance().database;
-    DatabaseReference ref = db.ref('users/${widget.postData.userId}');
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    DocumentReference ref = db.collection('Users').doc(widget.postData.userId);
     ref.get().then((data) {
       setState(() {
-        name = data.child('name').value.toString();
+        name = data['name'].toString();
       });
     });
   }
@@ -80,7 +79,7 @@ class _PostCardState extends State<PostCard> {
                     height: 400,
                     width: double.infinity,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                      borderRadius: BorderRadius.circular(10.0),
                       child: CachedNetworkImage(
                         alignment: Alignment.center,
                         fit: BoxFit.cover,

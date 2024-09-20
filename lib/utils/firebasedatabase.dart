@@ -1,16 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class FirebaseDatabaseInstance {
-  late FirebaseDatabase _database;
+class Firestore {
+  late FirebaseFirestore _database;
 
-  FirebaseDatabaseInstance() {
+  Firestore() {
     final firebaseApp = Firebase.app();
-    _database = FirebaseDatabase.instanceFor(
-      app: firebaseApp,
-      databaseURL: dotenv.env['DATABASE_URL'],
-    );
+    _database = FirebaseFirestore.instance;
   }
-  FirebaseDatabase get database => _database;
+  FirebaseFirestore get database => _database;
 }

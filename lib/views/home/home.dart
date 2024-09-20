@@ -1,26 +1,37 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasabuy/models/post.dart';
-import 'package:pasabuy/utils/firebasedatabase.dart';
+import 'package:pasabuy/services/post.dart';
+import 'package:pasabuy/utils/utils.dart';
 import 'package:pasabuy/views/components/post-card.dart';
+import 'package:pasabuy/views/splash/splashscreen.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
-  List<Post> posts = [];
+class _HomeState extends ConsumerState<Home> {
   ScrollController scrollController = ScrollController();
+  List<Post> posts = [];
+  int timestamp = 0;
+  bool hasMore = true;
+
   @override
   void initState() {
     super.initState();
-    getPosts();
+    initialPostLoad();
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent == scrollController.offset) {}
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        loadMorePosts();
+      }
     });
   }
 
@@ -31,7 +42,26 @@ class _HomeState extends State<Home> {
   }
 
   Future refresh() async {
-    getPosts();
+    initialPostLoad();
+  }
+
+  Future loadMorePosts() async {
+    int ts = posts.last.createdAt;
+    final newPost = await ref.read(postControllerProvider.notifier).getNewPosts(ts);
+    setState(() {
+      if (newPost.isEmpty) {
+        hasMore = false;
+      }
+      posts.addAll(newPost);
+    });
+  }
+
+  void initialPostLoad() async {
+    final newPost = await ref.read(postControllerProvider.notifier).getPosts();
+    var p = newPost;
+    setState(() {
+      posts = p;
+    });
   }
 
   @override
@@ -54,9 +84,17 @@ class _HomeState extends State<Home> {
                       onRefresh: refresh,
                       child: ListView.builder(
                         controller: scrollController,
-                        itemCount: posts.length,
+                        itemCount: posts.length + 1,
                         itemBuilder: (context, index) {
-                          return PostCard(postData: posts[index]);
+                          if (index < posts.length) {
+                            return PostCard(postData: posts[index]);
+                          } else {
+                            if (hasMore) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }
                         },
                       ),
                     ),
@@ -65,34 +103,5 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
-  }
-
-  void getPosts() {
-    setState(() {
-      posts.clear();
-    });
-    FirebaseDatabase db = FirebaseDatabaseInstance().database;
-    Query ref = db.ref('posts');
-    ref.once().then((data) {
-      if (data.snapshot.exists) {
-        for (var content in data.snapshot.children) {
-          List<String> imageUrls = [];
-          String postId = content.key.toString();
-          String uid = content.child('uid').value.toString();
-          String body = content.child('content').value.toString();
-          String address = content.child('address').value.toString();
-          int createdAt = int.parse(content.child('created_at').value.toString());
-          if (content.child('image_urls').value != null) {
-            imageUrls = List<String>.from(content.child('image_urls').value as List);
-          }
-          setState(() {
-            posts.add(Post(postId, uid, body, address, imageUrls, createdAt));
-          });
-        }
-      }
-      setState(() {
-        posts = posts.reversed.toList();
-      });
-    });
   }
 }
