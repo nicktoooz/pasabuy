@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pasabuy/models/userdata.dart';
+import 'package:pasabuy/utils/firestore.dart';
 
 class User {
   late FirebaseAuth _auth;
@@ -49,7 +50,7 @@ class User {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: userdata.email, password: userdata.password);
 
-      CollectionReference users = FirebaseFirestore.instance.collection('users');
+      CollectionReference users = Firestore().instance.collection('Users');
 
       await users.doc(userCredential.user!.uid).set({
         'name': userdata.name,
@@ -76,7 +77,7 @@ class User {
   }
 
   static Future<String> get name async {
-    var userDoc = await FirebaseFirestore.instance.collection('Users').doc(User().uid).get();
+    var userDoc = await Firestore().instance.collection('Users').doc(User().uid).get();
     print('Name : ${User().uid}');
     return userDoc.data()?['name'] ?? 'Null';
   }

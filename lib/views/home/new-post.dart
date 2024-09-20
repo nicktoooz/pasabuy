@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:pasabuy/models/user.dart';
+import 'package:pasabuy/utils/firestore.dart';
 import 'package:sizer/sizer.dart';
 
 class NewPostPage extends StatefulWidget {
@@ -63,7 +64,7 @@ class _NewPostPageState extends State<NewPostPage> {
                   ),
                   onPressed: () async {
                     var images = controller.images;
-                    FirebaseFirestore db = FirebaseFirestore.instance;
+                    FirebaseFirestore db = Firestore().instance;
                     int createdAt = DateTime.now().millisecondsSinceEpoch;
                     List<String> imageUrls = await uploadImages(images);
                     DocumentReference ref = db.collection('Posts').doc();

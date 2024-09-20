@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pasabuy/models/post.dart';
+import 'package:pasabuy/utils/firestore.dart';
 
 class PostController extends StateNotifier<List<Post>> {
   PostController() : super([]);
@@ -8,7 +9,7 @@ class PostController extends StateNotifier<List<Post>> {
   Future<List<Post>> getNewPosts(int timestamp) async {
     List<Post> newPosts = [];
 
-    FirebaseFirestore db = FirebaseFirestore.instance;
+    FirebaseFirestore db = Firestore().instance;
 
     try {
       QuerySnapshot snapshot = await db
@@ -42,7 +43,7 @@ class PostController extends StateNotifier<List<Post>> {
 
   Future<List<Post>> getPosts() async {
     List<Post> newPosts = [];
-    FirebaseFirestore db = FirebaseFirestore.instance;
+    FirebaseFirestore db = Firestore().instance;
 
     QuerySnapshot snapshot =
         await db.collection('Posts').orderBy('created_at', descending: true).limit(3).get();

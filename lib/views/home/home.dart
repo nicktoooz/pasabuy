@@ -1,15 +1,10 @@
 import 'dart:async';
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasabuy/models/post.dart';
 import 'package:pasabuy/services/post.dart';
-import 'package:pasabuy/utils/utils.dart';
 import 'package:pasabuy/views/components/post-card.dart';
-import 'package:pasabuy/views/splash/splashscreen.dart';
 
 class Home extends ConsumerStatefulWidget {
   const Home({super.key});
@@ -95,6 +90,7 @@ class _HomeState extends ConsumerState<Home> {
                               );
                             }
                           }
+                          return null;
                         },
                       ),
                     ),
