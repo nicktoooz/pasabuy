@@ -11,6 +11,9 @@ class PostPage extends ConsumerStatefulWidget {
 class _PostPageState extends ConsumerState<PostPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return SafeArea(
+        child: Scaffold(
+      body: Column(),
+    ));
   }
 }

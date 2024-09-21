@@ -5,6 +5,7 @@ import 'package:pasabuy/views/auth/signin.dart';
 import 'package:pasabuy/views/auth/signup.dart';
 import 'package:pasabuy/views/basket.dart';
 import 'package:pasabuy/views/home/home.dart';
+import 'package:pasabuy/views/home/message.dart';
 import 'package:pasabuy/views/home/messages.dart';
 import 'package:pasabuy/views/home/new-post.dart';
 import 'package:pasabuy/views/notifications.dart';
@@ -54,10 +55,17 @@ class AppNavigation {
           ]),
           StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
             GoRoute(
-              path: '/messages',
-              name: 'messages',
-              builder: (context, state) => MessagesPage(key: state.pageKey),
-            )
+                path: '/messages',
+                name: 'messages',
+                builder: (context, state) => MessageListPage(key: state.pageKey),
+                routes: [
+                  GoRoute(
+                      path: 'm',
+                      builder: (context, state) {
+                        final uid = state.uri.queryParameters['uid'];
+                        return MessagePage(key: state.pageKey, uid: uid!);
+                      })
+                ])
           ]),
           StatefulShellBranch(navigatorKey: GlobalKey<NavigatorState>(), routes: [
             GoRoute(

@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:pasabuy/models/post.dart';
+import 'package:pasabuy/models/user.dart';
 import 'package:pasabuy/utils/dialog-builder.dart';
 import 'package:relative_time/relative_time.dart';
 import 'package:sizer/sizer.dart';
@@ -19,6 +21,7 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   String name = '';
+  String input = '';
 
   @override
   void initState() {
@@ -242,6 +245,31 @@ class _PostCardState extends State<PostCard> {
                   color: Colors.grey.shade300,
                   margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10, top: 20),
                 ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: (val) {
+                      input = val;
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Type message',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    FirebaseDatabase database = FirebaseDatabase.instance;
+                    DatabaseReference ref = database.ref('Messages');
+                  },
+                  icon: const Icon(Icons.send),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
