@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pasabuy/models/post.dart';
 import 'package:pasabuy/services/post.dart';
+import 'package:pasabuy/utils/dialog-builder.dart';
 import 'package:pasabuy/views/components/post-card.dart';
 
 class Home extends ConsumerStatefulWidget {
@@ -82,7 +84,7 @@ class _HomeState extends ConsumerState<Home> {
                         itemCount: posts.length + 1,
                         itemBuilder: (context, index) {
                           if (index < posts.length) {
-                            return PostCard(postData: posts[index]);
+                            return PostCard(postData: posts[index], onImageTap: () {});
                           } else {
                             if (hasMore) {
                               return const Center(

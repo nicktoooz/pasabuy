@@ -8,8 +8,8 @@ class SplashScreenSetting extends StateNotifier<bool> {
   }
   Future<void> _loadSplashScreenState() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
-    final bool? mode = sp.getBool('splashScreenEnabled') ?? true;
-    state = mode!;
+    final bool mode = sp.getBool('splashScreenEnabled') ?? true;
+    state = mode;
   }
 
   Future<void> toggleState(bool enabled) async {

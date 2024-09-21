@@ -100,6 +100,7 @@ class _NewPostPageState extends ConsumerState<NewPostPage> with TickerProviderSt
                       uploading = 'Uploaded';
                     });
                     buildDialog(
+                      canDismiss: false,
                       onLoad: (ctx) async {
                         await Future.delayed(const Duration(seconds: 3));
                         Navigator.of(ctx).pop();
